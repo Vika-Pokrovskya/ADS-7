@@ -25,8 +25,13 @@ class TPQueue {
   ~TPQueue() {
     while (nach) pop();
   }
- 
-
+  T pop() {
+    ITEM *count = nach->next;
+    T data = nach->data;
+    delete nach;
+    nach = count;
+    return data;
+  }
   void push(const T &data) {
     if (kon && nach) {
       ITEM *count = nach;
@@ -36,7 +41,7 @@ class TPQueue {
         nach = count;
       } else {
         while (count->next) {
-          if (temp->next->data.prior < data.prior) {
+          if (count->next->data.prior < data.prior) {
             ITEM *t = create(data);
             t->next = count->next;
             count->next = t;
@@ -54,13 +59,6 @@ class TPQueue {
       nach = create(data);
       kon = nach;
     }
-  }
-   T pop() {
-    ITEM *count = nach->next;
-    T data = nach->data;
-    delete nach;
-    nach = count;
-    return data;
   }
 };
 
